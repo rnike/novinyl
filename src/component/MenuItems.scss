@@ -1,0 +1,22 @@
+.MenuItems {
+  width: 300px;
+  .header {
+    user-select: none;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 5px;
+    font-size: 15px;
+    display: flex;
+  }
+  .list {
+    overflow: hidden;
+  }
+  .item {
+    user-select: none;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 5px;
+    .title {
+    }
+  }
+}

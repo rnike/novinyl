@@ -1,0 +1,39 @@
+.tracks {
+  z-index: 1500; 
+  width: 100%;
+  position: relative;
+  display: flex;
+  .list {
+    width: 90%;
+    flex: 1;
+    display: flex;
+  }
+  .buttons {
+    border-radius: 15px 0 0 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .button {
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    width: 30px;
+    height: 40px;
+    cursor: pointer;
+    &.left {
+      svg {
+        width: 63%;
+        height: 63%;
+        transform: translateX(5px);
+      }
+    }
+    svg {
+      width: 60%;
+      height: 60%;
+    }
+  }
+}

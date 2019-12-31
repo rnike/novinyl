@@ -1,0 +1,305 @@
+$rpm: 33.5;
+$t: 60s / $rpm;
+// create tracks
+$tracks: ();
+$tracks-num: 7;
+$tracks-avail-size: 65%;
+$tracks-start: 30%;
+$track-size: $tracks-avail-size/$tracks-num;
+$track-variation: 3%;
+$track-ridge-size: 1%;
+$track-ridge-color: rgba(0, 0, 0, 0.3);
+$track-ridge-blur: 0.2%;
+@for $i from 1 through $tracks-num {
+  $cur-pos: $tracks-start + ($i * $track-size);
+  $cur-pos: $cur-pos + (random() * $track-variation);
+  $tracks: append($tracks, (transparentize($track-ridge-color, 1) $cur-pos - $track-ridge-blur), comma);
+  $tracks: append($tracks, ($track-ridge-color $cur-pos), comma);
+  $cur-pos: $cur-pos + $track-ridge-size;
+  $tracks: append($tracks, ($track-ridge-color $cur-pos), comma);
+  $tracks: append($tracks, (transparentize($track-ridge-color, 1) $cur-pos + $track-ridge-blur), comma);
+}
+@keyframes zoom {
+  0% {
+    transform: scale(1.6);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+$highlight-color: #eef;
+
+// create grooves
+$grooves: ();
+$grooves-loop-size: 70px;
+$grooves-steps: 59;
+@if ($grooves-steps % 2 == 0) {
+  $grooves-steps: $grooves-steps + 1;
+}
+$grooves-step-size: $grooves-loop-size/$grooves-steps;
+$grooves-color: black;
+$grooves-variation: 0.3;
+$grooves-max-transparency: 0.5;
+
+@for $i from 1 through $grooves-steps {
+  $step: $grooves-step-size * $i;
+  $transparency: 1;
+  $cur-variation: random() * $grooves-variation;
+  $transparency: $transparency - $cur-variation;
+  @if ($i % 2==1) {
+    $transparency: 1-$transparency;
+  }
+  $transparency: 1- ((1-$transparency) * $grooves-max-transparency);
+
+  $grooves: append($grooves, (transparentize($grooves-color, $transparency) $step), comma);
+}
+
+.player {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  .hiddenPlayer {
+    position: fixed;
+    left: -2000px;
+    width: 0px;
+    height: 0px;
+    z-index: -100;
+    bottom: 0;
+  }
+  .img {
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+  }
+  .thealbum {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .Stylus {
+    filter:  invert(1);
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .vinyl {
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    user-select: none;
+    opacity: 0;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .content {
+      z-index: 300;
+      width: 150px;
+      height: 150px;
+      border-radius: 500px;
+      background: darkcyan;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      padding: 3px;
+      .middle {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+        border: solid #ffffff55 2px;
+        padding: 15px;
+        overflow: hidden;
+        .text {
+          position: relative;
+          white-space: nowrap;
+          padding: 5px;
+          overflow: hidden;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          &.bottom {
+            top: 30%;
+          }
+        }
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 10px;
+          height: 10px;
+          background: black;
+          border-radius: 100%;
+        }
+      }
+    }
+    .tracks {
+      z-index: 100;
+      border-radius: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+    }
+    .spin {
+      overflow: hidden;
+      z-index: 200;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      background: black;
+      background: radial-gradient(circle closest-side, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0) 35.5%, rgba(0, 0, 0, 0) 96%, rgba(0, 0, 0, 1) 96.5%),
+        radial-gradient(circle closest-side, $tracks), repeating-radial-gradient($grooves),
+        conic-gradient(
+          transparentize(white, 1) 80deg,
+          transparentize(white, 0.96) 90deg,
+          transparentize(white, 1) 95deg,
+          transparentize(white, 1) 260deg,
+          transparentize(white, 0.96) 270deg,
+          transparentize(white, 1) 285deg
+        ),
+        conic-gradient(
+          transparentize(white, 1),
+          transparentize(white, 0.78) 20deg,
+          transparentize(white, 0.71) 40deg,
+          transparentize(white, 1) 70deg,
+          transparentize(white, 1) 180deg,
+          transparentize(white, 0.82) 200deg,
+          transparentize(white, 0.85) 210deg,
+          transparentize(white, 1) 250deg
+        ),
+        #000000;
+      background-blend-mode: normal, normal, color-dodge, normal, normal;
+
+      &.play {
+        &::before {
+          opacity: 0.5;
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: repeating-radial-gradient($grooves);
+          border-radius: 100%;
+          animation: zoom $t linear infinite;
+        }
+      }
+      &::before {
+        opacity: 0.5;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-radial-gradient($grooves);
+        border-radius: 100%;
+      }
+    }
+  }
+  .controller {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    left: 50%;
+    bottom: 5%;
+    height: 15%;
+    min-height: 90px;
+    width: 25%;
+    transform: translateX(-50%);
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      padding: 0 20px;
+      cursor: pointer;
+      svg {
+        min-width: 20px;
+        min-height: 20px;
+        width: 80%;
+        height: 80%;
+        border-radius: 100%;
+        padding: 8%;
+      }
+      &.center {
+        svg {
+          width: 90%;
+          height: 90%;
+        }
+      }
+    }
+  }
+  .searchPanel {
+    position: absolute;
+    padding: 10px;
+    right: 2%;
+    bottom: 8%;
+    border-radius: 15px;
+    width: 30%;
+    height: 10%;
+  }
+  .artist {
+    text-decoration: none;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    border-radius: 15px;
+    bottom: 8%;
+    width: 30%;
+    height: 10%;
+    left: 3%;
+    div {
+      padding: 10px;
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .albumTextDom {
+    white-space: nowrap;
+    text-decoration: none;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .notavailable {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 10%;
+    border-radius: 15px;
+    border: red solid 3px;
+    background-color: red;
+    color: white;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    transition: all .3s ease;
+  }
+}

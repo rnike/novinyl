@@ -1,0 +1,80 @@
+.bgOut {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.App {
+  display: flex;
+  margin: auto;
+  font-size: 12px;
+  background: linear-gradient(to bottom, #0e6259, #b10912, #0e6259);
+  height: 100%;
+  width: 100%;
+  max-width: 1920px;
+  max-height: 1080px;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+
+  .left {
+    width: 30px;
+  }
+  .right {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .rightBottom {
+    width: 100%;
+    height: 100%;
+  }
+
+  .bg {
+    position: absolute;
+    mix-blend-mode: multiply;
+    // opacity: 0.2;
+    opacity: 0.2;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+  }
+
+  .loadingPg {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: black;
+    color: white;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo {
+      font-size: 16px;
+      padding: 10px;
+    }
+    .loading {
+      padding: 10px;
+    }
+  }
+  .Warning{
+    z-index: 3001;
+    pointer-events: none;
+    user-select: none;
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+  }
+}

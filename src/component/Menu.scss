@@ -1,0 +1,77 @@
+@mixin scrollbars($size, $foreground-color, $background-color) {
+  // For Google Chrome
+  ::-webkit-scrollbar {
+    width: $size;
+    height: $size;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+
+  // For Internet Explorer
+  body {
+    scrollbar-face-color: $foreground-color;
+    scrollbar-track-color: $background-color;
+  }
+}
+@include scrollbars(2px, black, #00000000);
+.menu {
+  position: fixed;
+  top: 0;
+  left:0;
+  background: grey;
+  display: flex;
+  height: 100%;
+  width: 30px;
+  z-index: 2000;
+  .clickable { 
+    svg {
+      padding-top: 10px;
+      width: 15px;
+      height: 15px;
+    }
+    cursor: pointer;
+    width: 30px;
+    text-align: center;
+    height: 100%;
+  }
+  .drawer {
+    -ms-overflow-style: none;
+    // @include scrollbars(1rem,grey);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1%;
+    height: 98%;
+    width: 0px;
+  }
+  .drawerContent {
+    width: 100%;
+    height: 100%;
+  }
+  .origin {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .searchList {
+    position: relative;
+    width: 100%;
+    height: 0%;
+  }
+  .SigleItem {
+    font-size: 15px;
+    font-weight: 700;
+    padding: 5px;
+    user-select: none;
+    cursor: pointer;
+  }
+  .input {
+    bottom: 20px;
+    border: solid;
+  }
+}
