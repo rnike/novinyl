@@ -69,6 +69,10 @@
     }
   }
   .Warning{
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 3001;
     pointer-events: none;
     user-select: none;
@@ -76,6 +80,11 @@
     bottom: 5px;
     width: 100%;
     text-align: center;
+    a{
+      pointer-events: visible;
+      color: white;
+      padding-left: 10px;
+    }
   }
   .info{
     position: absolute;

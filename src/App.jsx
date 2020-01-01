@@ -69,17 +69,18 @@ export class App extends Component {
           <a style={{color:colorBottom}} className='info' target='_blank' rel='noopener noreferrer' href='https://www.kkbox.com/tw/tc/info/index.html'>Powered by KKBOX</a>
     
           {isMobile && (
-            <div style={{ color: color }} className='Warning'>
+            <div style={{ color: colorBottom }} className='Warning'>
               不支援行動裝置 ifram autoplay issue
             </div>
           )}
-          {!isMobile && isSafari && (
-            <div style={{ color: color }} className='Warning'>
-              Safari 瀏覽器請先至設定允許此頁面的自動撥放
+          { (
+            <div style={{ color: colorBottom }} className='Warning'>
+              <div>Safari 瀏覽器請先至設定允許此頁面的自動撥放</div>
+              <a style={{ color: colorBottom }} target='_blank' rel='noopener noreferrer'  href="https://www.howtogeek.com/326532/safari-now-disables-auto-playing-videos.-heres-how-to-allow-them-for-certain-sites/">如何做?</a>
             </div>
           )}
           {!isMobile && !isChrome && !isSafari && (
-            <div style={{ color: color }} className='Warning'>
+            <div style={{ color: colorBottom }} className='Warning'>
               使用 Chrome 獲得最佳體驗
             </div>
           )}
