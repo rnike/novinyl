@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { fetchMenuItems, fetchSearch } from '../redux/api';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import MenuItems from './MenuItems';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import gsap from 'gsap';
 import './Menu.scss';
 export class Menu extends Component {
@@ -54,14 +55,26 @@ export class Menu extends Component {
         <div style={{ background: `${colorInvert}99` }} className='drawer'>
           <div
             style={{
-              width: 300,
+              height: '5%',
               userSelect: 'none',
-              fontWeight: 700,
-              fontSize: 18,
-              height: '5%'
+              display: 'flex',
+              overflow: 'hidden', cursor: 'pointer'
+            }}
+            onClick={() => {
+              window.open('https://github.com/yum650350/novinyl', '_blank', 'noopener');
             }}
           >
-            NOVINYL v0.0.1
+            <div
+              style={{
+                whiteSpace: 'nowrap',
+                fontWeight: 700,
+                fontSize: 16,
+                letterSpacing: 3
+              }}
+            >
+              NOVINYL v0.0.1
+            </div>
+            <GitHubIcon style={{ paddingLeft: 10, width: 20, height: 20 }} />
           </div>
           <div className='drawerContent'>
             <div ref={x => (this.origin = x)} className='origin'>
@@ -86,7 +99,7 @@ export class Menu extends Component {
           }}
         >
           {!isOpen && <MenuIcon />}
-          {isOpen && <ArrowBackIosIcon style={{transform:'translateX(3px)'}}/>}
+          {isOpen && <ArrowBackIosIcon style={{ transform: 'translateX(3px)' }} />}
         </div>
       </div>
     );
