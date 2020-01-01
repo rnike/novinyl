@@ -23,11 +23,11 @@ export class Menu extends Component {
     if (prevProps.isOpen !== isOpen) {
       gsap.to('.drawer', {
         width: isOpen ? 300 : 0,
-        paddingLeft: isOpen ? 20 : 0,
-        paddingTop: isOpen ? 10 : 0
+        paddingLeft: isOpen ? 30 : 0,
+        paddingTop: isOpen ? 30 : 0
       });
       gsap.to('.menu', {
-        width: isOpen ? 320 : 30
+        width: isOpen ? 320 : 20
       });
     }
     if (prevProps.isSearching !== isSearching) {
@@ -58,7 +58,7 @@ export class Menu extends Component {
               userSelect: 'none',
               fontWeight: 700,
               fontSize: 18,
-              padding: 3
+              height: '5%'
             }}
           >
             NOVINYL v0.0.1
@@ -86,7 +86,7 @@ export class Menu extends Component {
           }}
         >
           {!isOpen && <MenuIcon />}
-          {isOpen && <ArrowBackIosIcon />}
+          {isOpen && <ArrowBackIosIcon style={{transform:'translateX(3px)'}}/>}
         </div>
       </div>
     );
@@ -99,6 +99,7 @@ const mapStateToProps = state => ({
   FETURED: state.Menu.FETURED,
   isSearching: state.Menu.isSearching,
   background: state.UI.background,
+  color: state.UI.color,
   colorInvert: state.UI.colorInvert
 });
 

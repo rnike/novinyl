@@ -8,14 +8,6 @@ import { playerUpdate } from '../redux/actions';
 import gsap from 'gsap';
 import ArrowRightIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowLeftIcon from '@material-ui/icons/ArrowBackIos';
-// id: "0opcDEE3hv4OTrmy2Z"
-// name: "Negai"
-// duration: 310700
-// isrc: "JPU901902960"
-// url: "https://www.kkbox.com/tw/tc/song/fVD00xX1PG53cv5D3cv5D0XL-index.html"
-// track_number: 1
-// explicitness: false
-// available_territories: (4) ["TW", "HK", "SG", "MY"]
 export class Tracks extends Component {
   constructor(props) {
     super(props);
@@ -83,7 +75,7 @@ export class Tracks extends Component {
     );
   }
   render() {
-    const { data, previous, next, playerUpdate, colorInvert } = this.props;
+    const { data, previous, next, playerUpdate} = this.props;
     return (
       <div ref={x => (this.ref = x)} className='tracks'>
         <div ref={x => (this.list = x)} className='list'>
@@ -96,7 +88,7 @@ export class Tracks extends Component {
               );
             })}
         </div>
-        <div className='buttons' style={{ background: `${colorInvert}55` }}>
+        <div className='buttons' >
           <div className='button left' onClick={() => this.previousClick()}>
             {previous && <ArrowLeftIcon />}
           </div>

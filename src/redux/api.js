@@ -4,7 +4,6 @@ import { albumUpdate, menuUpdateGroup, playerUpdate } from './actions';
 const FETCH_TOKEN_URL = 'https://novon.cc:3001/kkbox/oauth2'; //"https://account.kkbox.com/oauth2/token";
 const NEW_HITS_PLAYLISTS = 'https://api.kkbox.com/v1.1/new-hits-playlists?territory=TW';
 const NEW_HITS_PLAYLISTS_TRACKS = id => `https://api.kkbox.com/v1.1/new-hits-playlists/${id}/tracks?territory=TW&limit=15`;
-// const ALBUM = (id) => `https://api.kkbox.com/v1.1/tracks/${id}/tracks?territory=TW&limit=5`
 const TRACK = id => `https://api.kkbox.com/v1.1/tracks/${id}?territory=TW`;
 const FEATURED_PLAYLISTS = `https://api.kkbox.com/v1.1/featured-playlists?territory=TW`;
 const FEATURED_PLAYLISTS_TRACKS = id => `https://api.kkbox.com/v1.1/featured-playlists/${id}/tracks?territory=TW&limit=15`;
@@ -102,7 +101,7 @@ export const fetchSelector = kind => async () => {
   }
 };
 
-//Fetch
+// Fetch
 export const fetchMenuItems = () => dispatch => {
   dispatch(fetchNewHits(true));
   dispatch(fetchFeatured());

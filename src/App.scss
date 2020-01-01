@@ -35,8 +35,8 @@
   .bg {
     position: absolute;
     mix-blend-mode: multiply;
-    // opacity: 0.2;
-    opacity: 0.2;
+    filter: brightness(50%);
+    opacity: .1;
     height: 100%;
     width: 100%;
     z-index: -1;
@@ -76,5 +76,13 @@
     bottom: 5px;
     width: 100%;
     text-align: center;
+  }
+  .info{
+    position: absolute;
+    user-select: none; 
+    right: 5px;
+    bottom: 3px;
+    font-size: 10px;
+    white-space: nowrap;
   }
 }

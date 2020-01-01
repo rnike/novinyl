@@ -21,20 +21,6 @@ export class App extends Component {
         .to(ref, { background: background, color: color }, 'colorChanged')
         .to(thumb, { background: background }, 'colorChanged')
         .to('body', { 'scrollbar-face-color': background }, 'colorChanged');
-      // gsap.to(track,{ background:background});
-      // ::-webkit-scrollbar-thumb {
-      //   background: $foreground-color;
-      // }
-
-      // ::-webkit-scrollbar-track {
-      //   background: $background-color;
-      // }
-
-      // // For Internet Explorer
-      // body
-
-      // scrollbar-face-color: black;
-      // scrollbar-track-color: #00000055;
     }
     if (prevProps.isInit !== isInit) {
       gsap.to('.loadingPg', {
@@ -47,7 +33,7 @@ export class App extends Component {
   }
 
   render() {
-    const { menuUpdate, colorInvert, color } = this.props;
+    const { menuUpdate, colorInvert, color,colorBottom } = this.props;
     const { isMobile, isSafari, isChrome } = window;
     return (
       <div style={{ background: `${colorInvert}99` }} className='bgOut'>
@@ -80,6 +66,8 @@ export class App extends Component {
               <div className='loading'>loading</div>
             </div>
           </div>
+          <a style={{color:colorBottom}} className='info' target='_blank' rel='noopener noreferrer' href='https://www.kkbox.com/tw/tc/info/index.html'>Powered by KKBOX</a>
+    
           {isMobile && (
             <div style={{ color: color }} className='Warning'>
               不支援行動裝置 ifram autoplay issue
@@ -106,6 +94,7 @@ const mapStateToProps = state => ({
   background: state.UI.background,
   color: state.UI.color,
   colorInvert: state.UI.colorInvert,
+  colorBottom:state.UI.colorBottom,
   isInit: state.UI.isInit
 });
 

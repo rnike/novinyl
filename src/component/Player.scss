@@ -68,7 +68,7 @@ $grooves-max-transparency: 0.5;
     bottom: 0;
   }
   .img {
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 3px 3px 10px rgba(104, 104, 104, 0.5);
   }
   .thealbum {
     position: absolute;
@@ -76,9 +76,15 @@ $grooves-max-transparency: 0.5;
     top: 0;
   }
   .Stylus {
-    filter:  invert(1);
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.7));
     cursor: pointer;
     position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .panel{
+    position: absolute;
+    box-shadow: 3px 3px 10px rgba(104, 104, 104, 0.5);
     left: 0;
     top: 0;
   }
@@ -211,18 +217,12 @@ $grooves-max-transparency: 0.5;
       }
     }
   }
-  .controller {
-    position: absolute;
+
+  .controller { 
+    flex:1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
-    left: 50%;
-    bottom: 5%;
-    height: 15%;
-    min-height: 90px;
-    width: 25%;
-    transform: translateX(-50%);
     .button {
       display: flex;
       align-items: center;
@@ -247,26 +247,16 @@ $grooves-max-transparency: 0.5;
       }
     }
   }
-  .searchPanel {
-    position: absolute;
-    padding: 10px;
-    right: 2%;
-    bottom: 8%;
-    border-radius: 15px;
-    width: 30%;
-    height: 10%;
+  .searchPanel { 
+    flex:1; 
   }
   .artist {
     text-decoration: none;
-    padding: 10px;
+    padding: 10px 0;
     display: flex;
     align-items: center;
-    position: absolute;
     border-radius: 15px;
-    bottom: 8%;
-    width: 30%;
-    height: 10%;
-    left: 3%;
+    flex:1;
     div {
       padding: 10px;
     }
@@ -274,12 +264,16 @@ $grooves-max-transparency: 0.5;
       text-decoration: underline;
     }
   }
-
+  .bottom{
+    position: absolute;
+    bottom: 0; 
+    display: flex; 
+  } 
   .albumTextDom {
     white-space: nowrap;
     text-decoration: none;
     position: absolute;
-    top: 0;
+    top: -15px; 
     left: 50%;
     transform: translateX(-50%);
     &:hover {

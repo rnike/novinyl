@@ -31,7 +31,6 @@ window.isSafari = isWho.includes('Safari');
 window.isChrome = isWho.includes('Chrome'); 
 window.who = isWho;
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  // some code..
   window.isMobile = true;
  }
 gsap.registerPlugin(CSSRulePlugin);

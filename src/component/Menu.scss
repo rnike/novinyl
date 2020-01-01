@@ -23,35 +23,41 @@
 .menu {
   position: fixed;
   top: 0;
-  left:0;
+  left: 0;
   background: grey;
   display: flex;
   height: 100%;
-  width: 30px;
+  width: 20px;
   z-index: 2000;
-  .clickable { 
+  overflow: hidden;
+  .clickable {
     svg {
-      padding-top: 10px;
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
+      &.back {
+        transform: translateX(3px);
+      }
     }
     cursor: pointer;
-    width: 30px;
+    width: 20px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
   }
   .drawer {
-    -ms-overflow-style: none;
-    // @include scrollbars(1rem,grey);
-    overflow-y: auto;
-    overflow-x: hidden;
     padding: 1%;
-    height: 98%;
+    height: 100%;
     width: 0px;
+    overflow: hidden;
   }
   .drawerContent {
+    -ms-overflow-style: none;
+    overflow-y: auto;
+    overflow-x: hidden;
     width: 100%;
-    height: 100%;
+    height: 90%;
   }
   .origin {
     position: relative;
@@ -65,7 +71,7 @@
   }
   .SigleItem {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 500;
     padding: 5px;
     user-select: none;
     cursor: pointer;

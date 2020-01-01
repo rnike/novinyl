@@ -41,11 +41,18 @@ export class Player extends Component {
   componentDidMount() {
     const { vinylContent, onResize, keyDetector, TheStylus } = this;
     const cr = this.c.r.baseVal.value;
-    const cx = Math.round((this.c.cx.baseVal.value / 90) * 100) - cr;
-    const cy = Math.round((this.c.cy.baseVal.value / 345) * 100) ;
-    this.SOrigin =  `${cx}% ${cy}%`;
+    const cx = Math.round((this.c.cx.baseVal.value / 90) * 100) - cr * 4;
+    const cy = Math.round((this.c.cy.baseVal.value / 345) * 100);
+    this.SOrigin = `${cx}% ${cy}%`;
     this.spin = gsap.to(vinylContent, 3, { rotation: 360, repeat: -1, ease: 'none' }).pause(0);
-    this.wiggle = gsap.to(TheStylus, 0.2, { transformOrigin: this.SOrigin, rotation: 9.8, yoyo: true, ease: 'none', repeat: -1 }).pause(0);
+    this.wiggle = gsap
+      .fromTo(
+        TheStylus,
+        0.2,
+        { transformOrigin: this.SOrigin, rotation: 15 },
+        { transformOrigin: this.SOrigin, rotation: 14.8, yoyo: true, ease: 'none', repeat: -1 }
+      )
+      .pause(0);
     this.resizeTimeOut = setTimeout(() => this.resize(), 500);
     window.addEventListener('resize', onResize);
     document.addEventListener('keydown', keyDetector, false);
@@ -78,22 +85,25 @@ export class Player extends Component {
   }
   onResize() {
     clearTimeout(this.resizeTimeOut);
-
     this.resizeTimeOut = setTimeout(() => this.resize(), 500);
   }
   resize() {
-    const { img, vinylContent, thealbum, TheStylus, ref, middle } = this;
-    const w = ref.offsetWidth; //preW > 1600 ? 1600 : preW;
-    const h = ref.offsetHeight; //preW > 1600 ? 1600 : preW;
+    const { img, vinylContent, thealbum, TheStylus, ref, middle, panel, bottom } = this;
+    const w = ref.offsetWidth;
+    const h = ref.offsetHeight;
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const preSize = w * 0.3;
     const size = preSize > h ? (h * 1) / 2 : preSize;
     this.size = size;
     gsap
       .timeline()
       .add('playerResize')
-      .to(['.vinyl', img, TheStylus], { width: size, height: size }, 'playerResize')
-      .to(['.vinyl', thealbum, TheStylus], { left: w / 2 - size, top: h / 2 - (size * 2) / 3 }, 'playerResize')
-      .to('.vinyl', { opacity: 1, x: size + 10 }, 'playerResize')
+      .to(bottom, { width: size + 40 + size + 15, left: w / 2 - size - size / 8, bottom: vh*0.05 }, 'playerResize')
+      .to([img, TheStylus], { width: size, height: size }, 'playerResize')
+      .to('.vinyl', { width: size - 10, height: size - 10, left: w / 2 - size + 5 - size / 8, top: h / 2 - (size * 2) / 3 + 5 }, 'playerResize')
+      .to([thealbum, TheStylus, panel], { left: w / 2 - size - size / 8, top: h / 2 - (size * 2) / 3 }, 'playerResize')
+      .to(panel, { width: size + 40, height: size, x: size + 10 }, 'playerResize')
+      .to('.vinyl', { opacity: 1, x: size + 15 }, 'playerResize')
       .to(TheStylus, { x: size + size / 2 }, 'playerResize')
       .to(middle, { fontSize: size * 0.01 }, 'playerResize')
       .to(vinylContent, { width: size * 0.3, height: size * 0.3 }, 'playerResize')
@@ -141,12 +151,12 @@ export class Player extends Component {
     }
   }
   playPrevious() {
-    const { trackList, data, playerUpdate, fetchAlbum, previous, kind, albumID ,total} = this.props;
-    const nextIndex = data.index - 1; 
+    const { trackList, data, playerUpdate, fetchAlbum, previous, kind, albumID, total } = this.props;
+    const nextIndex = data.index - 1;
     if (nextIndex >= 0) {
       playerUpdate({ ...trackList[nextIndex], index: nextIndex });
     } else {
-      fetchAlbum(albumID, kind, previous, AUTOPLAY_LAST,total-15);
+      fetchAlbum(albumID, kind, previous, AUTOPLAY_LAST, total - 15);
     }
   }
   resume() {
@@ -156,7 +166,7 @@ export class Player extends Component {
     if (data && available) {
       gsap.to(TheStylus, {
         transformOrigin: this.SOrigin,
-        rotation: 10,
+        rotation: 15,
         onComplete: () => {
           this.spin.play();
           this.wiggle.play();
@@ -189,7 +199,7 @@ export class Player extends Component {
         '.vinyl',
         {
           opacity: 1,
-          x: size + 10,
+          x: size + 15,
           onComplete: () => {
             const available = available_territories.includes('TW');
             this.setState({ available: available });
@@ -198,7 +208,7 @@ export class Player extends Component {
             }
             if (isPlaying && available) {
               gsap.to(TheStylus, {
-                rotation: 10,
+                rotation: 15,
                 transformOrigin: this.SOrigin,
                 onComplete: () => {
                   gsap.set(spinDom, { className: 'spin play' });
@@ -260,7 +270,6 @@ export class Player extends Component {
           opacity: 0,
           onComplete: () => {
             spin.seek(0);
-            // this.wiggle.seek(0);
             this.setState({
               img: images[1].url,
               albumText: data.name,
@@ -285,7 +294,7 @@ export class Player extends Component {
     fetchSearch(this.input.value);
   }
   render() {
-    const { data, uiUpdate, colorInvert, color } = this.props;
+    const { data, uiUpdate, colorInvert, color, colorBottom } = this.props;
     const { isPlaying } = data;
     const { available } = this.state;
 
@@ -294,28 +303,31 @@ export class Player extends Component {
         width: '100%',
         height: '100%',
         '& label.Mui-focused': {
-          color: `${color}`
+          color: `${colorBottom}`
         },
         '& .MuiInput-underline:after': {
-          borderBottomColor: `${color}`
+          borderBottomColor: `${colorBottom}`
         },
         '& input': {
           height: '100%',
-          color: `${color}`,
-          // backgroundColor: `${colorInvert}55`,
+          color: `${colorBottom}`,
           borderRadius: 5,
           padding: 10
         },
         '& label': {
-          color: `${color}`
+          color: `${colorBottom}`,
+          fontSize: 12,
+          fontFamily:
+            'Noto Sans TC, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif'
         },
         '& .MuiInput-underline': {
-          color: `${color}aa`
+          color: `${colorBottom}aa`
         }
       }
     })(TextField);
     return (
       <div ref={x => (this.ref = x)} className='player'>
+        <div ref={x => (this.panel = x)} style={{ background: `${colorInvert}` }} className='panel'></div>
         <div className='vinyl'>
           <div ref={x => (this.spinDom = x)} className='spin'></div>
           <div ref={x => (this.vinylContent = x)} className='content'>
@@ -338,15 +350,21 @@ export class Player extends Component {
               gsap.to(vinylContent, { background: color.rgb, color: c, onComplete: () => albumback() });
 
               var parts = [];
-              const count = 10;
+              const count = 11;
               const naturalHeight = x.target.naturalHeight;
               const naturalHeightPart = Math.floor(naturalHeight / count);
+              var colorBottom, backgroundBottom;
               for (var i = 0; i < count; i++) {
                 const c2 = fac.getColor(x.target, { left: 0, top: i * naturalHeightPart, height: naturalHeightPart });
                 parts.push(c2.rgb + ', ' + c2.rgb);
+                if (i === count - 1) {
+                  backgroundBottom = c2.hex;
+                  colorBottom = invert(c2.hex, true);
+                }
               }
+              fac.destroy();
               var val = 'linear-gradient(to bottom, ' + parts.join(', ') + ')';
-              uiUpdate({ background: val, color: c, colorInvert: color.hex });
+              uiUpdate({ background: val, color: c, colorInvert: color.hex, colorBottom: colorBottom, backgroundBottom: backgroundBottom });
             }}
             crossOrigin='Anonymous'
             src={this.state.img}
@@ -355,7 +373,6 @@ export class Player extends Component {
         </div>
         <div ref={x => (this.hiddenPlayer = x)} className='hiddenPlayer'></div>
         {!available && <div className='notavailable'>Not Available</div>}
-
         <svg
           ref={x => (this.TheStylus = x)}
           onClick={() => {
@@ -366,23 +383,23 @@ export class Player extends Component {
             }
           }}
           className='Stylus'
-          viewBox='0 0 90 345'
+          viewBox='0 0 79 422'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
         >
-          <rect x='12.6875' y='306' width='15.4796' height='35.4201' rx='3' transform='rotate(20.9898 12.6875 306)' fill={colorInvert} />
-          <path d='M64.5 89.5V199.5L14.5 322.5' stroke={colorInvert} strokeWidth='6' />
-          <rect x='40' width='50' height='107' rx='3' fill={colorInvert} />
-          <circle ref={x => (this.c = x)} cx='63.5' cy='26.5' r='12.5' fill={color} />
+          <rect x='51' y='6' width='10' height='335' fill='#D4D4D4' />
+          <path d='M51.0001 2C51.0001 0.89543 51.8956 0 53.0001 0H59.0001C60.1047 0 61.0001 0.895431 61.0001 2V6H51.0001V2Z' fill='black' />
+          <rect x='45.0001' y='10' width='6' height='39' fill='black' />
+          <rect x='61.0001' y='10' width='6' height='39' fill='black' />
+          <rect x='70.0001' y='61' width='9' height='20' rx='2' fill='black' />
+          <path d='M41 68C41 66.8954 41.8954 66 43 66H70V76H43C41.8954 76 41 75.1046 41 74V68Z' fill='#D4D4D4' />
+          <path d='M50.9999 341L60.9999 341L25.9999 401L17.4999 396L50.9999 341Z' fill='#D4D4D4' />
+          <rect x='29.6664' y='366.12' width='18.9228' height='53.468' transform='rotate(32.8484 29.6664 366.12)' fill='black' />
+          <circle ref={x => (this.c = x)} cx='56' cy='30' r='2' fill='white' />
         </svg>
-        <div className='bottom'>
-          <a
-            target='_blank'
-            rel='noopener noreferrer'
-            style={{ color: this.props.color, background: `${colorInvert}55` }}
-            href={this.state.artistUrl}
-            className='artist'
-          >
+
+        <div ref={x => (this.bottom = x)} className='bottom'>
+          <a target='_blank' rel='noopener noreferrer' style={{ color: colorBottom }} href={this.state.artistUrl} className='artist'>
             <img style={{ borderRadius: '100%', width: 50, height: 50 }} src={this.state.albumArtistImg} alt={this.state.artistName} />
             <div>{this.state.artistName}</div>
           </a>
@@ -390,7 +407,7 @@ export class Player extends Component {
             <a
               target='_blank'
               rel='noopener noreferrer'
-              style={{ color: this.props.color }}
+              style={{ color: colorBottom }}
               href={this.state.albumUrl}
               ref={x => (this.albumTextDom = x)}
               className='albumTextDom'
@@ -403,7 +420,7 @@ export class Player extends Component {
                 this.playPrevious();
               }}
             >
-              <SkipPreviousIcon style={{ background: `${colorInvert}55` }} />
+              <SkipPreviousIcon style={{ background: `${colorInvert}55`, color: colorBottom }} />
             </div>
             <div
               className='button center'
@@ -415,7 +432,11 @@ export class Player extends Component {
                 }
               }}
             >
-              {!isPlaying ? <PlayArrowIcon style={{ background: `${colorInvert}55` }} /> : <StopIcon style={{ background: `${colorInvert}55` }} />}
+              {!isPlaying ? (
+                <PlayArrowIcon style={{ background: `${colorInvert}55`, color: colorBottom }} />
+              ) : (
+                <StopIcon style={{ background: `${colorInvert}55`, color: colorBottom }} />
+              )}
             </div>
             <div
               className='button'
@@ -423,10 +444,10 @@ export class Player extends Component {
                 this.playNext();
               }}
             >
-              <SkipNextIcon style={{ background: `${colorInvert}55` }} />
+              <SkipNextIcon style={{ background: `${colorInvert}55`, color: colorBottom }} />
             </div>
           </div>
-          <div className='searchPanel' style={{ background: `${colorInvert}55` }}>
+          <div className='searchPanel' style={{ color: colorBottom }}>
             <StyledTextField
               style={{ color: color }}
               onFocus={() => {
@@ -460,8 +481,9 @@ const mapStateToProps = state => ({
   albumID: state.Album.albumID,
   color: state.UI.color,
   colorInvert: state.UI.colorInvert,
+  colorBottom: state.UI.colorBottom,
   isInit: state.UI.isInit,
-  total:state.Album.summary&&state.Album.summary.total
+  total: state.Album.summary && state.Album.summary.total
 });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
