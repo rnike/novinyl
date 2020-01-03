@@ -98,7 +98,7 @@ export class Player extends Component {
     gsap
       .timeline()
       .add('playerResize')
-      .to(bottom, { width: size + 40 + size + 15, left: w / 2 - size - size / 8, bottom: vh*0.05 }, 'playerResize')
+      .to(bottom, { width: size + 40 + size + 15, left: w / 2 - size - size / 8, bottom: vh * 0.05 }, 'playerResize')
       .to([img, TheStylus], { width: size, height: size }, 'playerResize')
       .to('.vinyl', { width: size - 10, height: size - 10, left: w / 2 - size + 5 - size / 8, top: h / 2 - (size * 2) / 3 + 5 }, 'playerResize')
       .to([thealbum, TheStylus, panel], { left: w / 2 - size - size / 8, top: h / 2 - (size * 2) / 3 }, 'playerResize')
@@ -160,9 +160,9 @@ export class Player extends Component {
     }
   }
   resume() {
-    const { playerUpdate } = this.props;
+    const { playerUpdate, country } = this.props;
     const { data, spinDom, TheStylus } = this;
-    const available = data.available_territories.includes('TW');
+    const available = data.available_territories.includes(country);
     if (data && available) {
       gsap.to(TheStylus, {
         transformOrigin: this.SOrigin,
@@ -189,7 +189,7 @@ export class Player extends Component {
   albumback() {
     const { data, thealbum, spin, hiddenPlayer, playNext, spinDom, TheStylus, wiggle, props, size, stop } = this;
     const { isPlaying, available_territories } = data;
-    const { uiUpdate, isInit } = props;
+    const { uiUpdate, isInit, country } = props;
     this.albumBackAnumate = gsap
       .timeline()
       .add('albumback')
@@ -201,7 +201,7 @@ export class Player extends Component {
           opacity: 1,
           x: size + 15,
           onComplete: () => {
-            const available = available_territories.includes('TW');
+            const available = available_territories.includes(country);
             this.setState({ available: available });
             if (!isInit && !window.isMobile) {
               uiUpdate({ isInit: true });
@@ -294,7 +294,7 @@ export class Player extends Component {
     fetchSearch(this.input.value);
   }
   render() {
-    const { data, uiUpdate, colorInvert, color, colorBottom } = this.props;
+    const { data, uiUpdate, colorInvert, color, colorBottom, language } = this.props;
     const { isPlaying } = data;
     const { available } = this.state;
 
@@ -463,7 +463,7 @@ export class Player extends Component {
               }}
               inputRef={x => (this.input = x)}
               type='text'
-              label='搜尋歌曲'
+              label={language&&language.搜尋歌曲}
             />
           </div>
         </div>
@@ -483,7 +483,9 @@ const mapStateToProps = state => ({
   colorInvert: state.UI.colorInvert,
   colorBottom: state.UI.colorBottom,
   isInit: state.UI.isInit,
-  total: state.Album.summary && state.Album.summary.total
+  total: state.Album.summary && state.Album.summary.total,
+  country: state.UI.country,
+  language: state.UI.language
 });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

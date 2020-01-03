@@ -49,7 +49,7 @@ export class Menu extends Component {
     });
   }
   render() {
-    const { menuUpdate, isOpen, NEW_HITS, FETURED, fetchSearch, background, colorInvert } = this.props;
+    const { menuUpdate, isOpen, NEW_HITS, FETURED, fetchSearch, background, colorInvert, language } = this.props;
     return (
       <div style={{ background: `${background}` }} className='menu'>
         <div style={{ background: `${colorInvert}99` }} className='drawer'>
@@ -58,7 +58,8 @@ export class Menu extends Component {
               height: '5%',
               userSelect: 'none',
               display: 'flex',
-              overflow: 'hidden', cursor: 'pointer'
+              overflow: 'hidden',
+              cursor: 'pointer'
             }}
             onClick={() => {
               window.open('https://github.com/yum650350/novinyl', '_blank', 'noopener');
@@ -78,7 +79,7 @@ export class Menu extends Component {
           </div>
           <div className='drawerContent'>
             <div ref={x => (this.origin = x)} className='origin'>
-              {NEW_HITS && <MenuItems groupTitle={'速爆新歌'} groupData={NEW_HITS} />}
+              {NEW_HITS && <MenuItems groupTitle={language&&language.速爆新歌} groupData={NEW_HITS} />}
               {FETURED && <MenuItems groupTitle={'FETURED'} groupData={FETURED} />}
               <div
                 className='SigleItem'
@@ -113,7 +114,8 @@ const mapStateToProps = state => ({
   isSearching: state.Menu.isSearching,
   background: state.UI.background,
   color: state.UI.color,
-  colorInvert: state.UI.colorInvert
+  colorInvert: state.UI.colorInvert,
+  language: state.UI.language
 });
 
 const mapDispatchToProps = dispatch =>

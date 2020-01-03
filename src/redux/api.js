@@ -1,17 +1,18 @@
 import axios from 'axios';
-import { albumUpdate, menuUpdateGroup, playerUpdate } from './actions';
+import {速爆新歌,搜尋歌曲,不支援行動裝置,Safari瀏覽器請先至設定允許此頁面的自動撥放,如何做,使用Chrome獲得最佳體驗} from './language'
+import { albumUpdate, menuUpdateGroup, playerUpdate, uiUpdate } from './actions';
 
 const FETCH_TOKEN_URL = 'https://novon.cc:3001/kkbox/oauth2'; //"https://account.kkbox.com/oauth2/token";
-const NEW_HITS_PLAYLISTS = 'https://api.kkbox.com/v1.1/new-hits-playlists?territory=TW';
-const NEW_HITS_PLAYLISTS_TRACKS = id => `https://api.kkbox.com/v1.1/new-hits-playlists/${id}/tracks?territory=TW&limit=15`;
-const TRACK = id => `https://api.kkbox.com/v1.1/tracks/${id}?territory=TW`;
-const FEATURED_PLAYLISTS = `https://api.kkbox.com/v1.1/featured-playlists?territory=TW`;
-const FEATURED_PLAYLISTS_TRACKS = id => `https://api.kkbox.com/v1.1/featured-playlists/${id}/tracks?territory=TW&limit=15`;
-const FEATCH_ARTIST_TRACKS = id => `https://api.kkbox.com/v1.1/artists/${id}/top-tracks?territory=TW&limit=15`;
-const SEARCH_URL = q => `https://api.kkbox.com/v1.1/search?q=${q}&territory=TW&type=track&limit=15`;
-const SongPlayerUrl = id => `https://widget.kkbox.com/v1/?id=${id}&type=song&terr=TW&autoplay=true`;
+const NEW_HITS_PLAYLISTS = country => `https://api.kkbox.com/v1.1/new-hits-playlists?territory=${country}`;
+const NEW_HITS_PLAYLISTS_TRACKS = (id,country) => `https://api.kkbox.com/v1.1/new-hits-playlists/${id}/tracks?territory=${country}&limit=15`;
+const TRACK = (id, country) => `https://api.kkbox.com/v1.1/tracks/${id}?territory=${country}`;
+const FEATURED_PLAYLISTS = country => `https://api.kkbox.com/v1.1/featured-playlists?territory=${country}`;
+const FEATURED_PLAYLISTS_TRACKS = (id, country) => `https://api.kkbox.com/v1.1/featured-playlists/${id}/tracks?territory=${country}&limit=15`;
+const FEATCH_ARTIST_TRACKS = (id, country) => `https://api.kkbox.com/v1.1/artists/${id}/top-tracks?territory=${country}&limit=15`;
+const SEARCH_URL = (q, country) => `https://api.kkbox.com/v1.1/search?q=${q}&territory=${country}&type=track&limit=15`;
+const SongPlayerUrl = (id, country) => `https://widget.kkbox.com/v1/?id=${id}&type=song&terr=${country}&autoplay=true`;
 
-var token;
+export var token;
 
 export const NEW_HITS = 'NEW_HITS';
 export const FEATURED = 'FEATURED_PLAYLISTS';
@@ -20,16 +21,16 @@ export const SEARCH = 'SEARCH';
 export const AUTOPLAY_FIRST = 'AUTOPLAY_FIRST';
 export const AUTOPLAY_LAST = 'AUTOPLAY_LAST';
 
-export const SongPlayerIframe = id => `<iframe src="${SongPlayerUrl(id)}" allow="autoplay"></iframe>`;
+export const SongPlayerIframe = id => `<iframe src="${SongPlayerUrl(id,token.country)}" allow="autoplay"></iframe>`;
 
 export const fetchTrack = async id => {
-  const result = await axiosMiddleWare(TRACK(id));
+  const result = await axiosMiddleWare(TRACK(id,token.country));
   return result.data;
 };
 
 export const fetchSearch = q => async dispatch => {
   if (q !== '') {
-    const result = await axiosMiddleWare(SEARCH_URL(q));
+    const result = await axiosMiddleWare(SEARCH_URL(q,token.country));
     const data = result.data;
     dispatch(albumUpdate({ ...data.tracks, kind: SEARCH }));
     dispatch(playerUpdate({ ...data.tracks.data[0], index: 0 }));
@@ -39,7 +40,7 @@ export const fetchAlbum = (id, kind, url, autoPlay, offset) => async dispatch =>
   var data, result, fetchUrl;
   switch (kind) {
     case ARTIST:
-      fetchUrl = url ? url : FEATCH_ARTIST_TRACKS(id);
+      fetchUrl = url ? url : FEATCH_ARTIST_TRACKS(id,token.country);
       if (offset) {
         fetchUrl += `&offset=${offset}`;
       }
@@ -48,7 +49,7 @@ export const fetchAlbum = (id, kind, url, autoPlay, offset) => async dispatch =>
       dispatch(albumUpdate({ ...result.data, kind: kind, albumID: id }));
       break;
     case NEW_HITS:
-      fetchUrl = url ? url : NEW_HITS_PLAYLISTS_TRACKS(id);
+      fetchUrl = url ? url : NEW_HITS_PLAYLISTS_TRACKS(id,token.country);
       if (offset) {
         fetchUrl += `&offset=${offset}`;
       }
@@ -57,7 +58,7 @@ export const fetchAlbum = (id, kind, url, autoPlay, offset) => async dispatch =>
       dispatch(albumUpdate({ ...result.data, kind: kind, albumID: id }));
       break;
     case FEATURED:
-      fetchUrl = url ? url : FEATURED_PLAYLISTS_TRACKS(id);
+      fetchUrl = url ? url : FEATURED_PLAYLISTS_TRACKS(id,token.country);
       if (offset) {
         fetchUrl += `&offset=${offset}`;
       }
@@ -102,17 +103,29 @@ export const fetchSelector = kind => async () => {
 };
 
 // Fetch
-export const fetchMenuItems = () => dispatch => {
+export const fetchMenuItems = () => async dispatch => {
+  await axiosMiddleWare();
+  dispatch(uiUpdate({
+    country:token.country,
+    language:{
+      速爆新歌:速爆新歌(token.country),
+      搜尋歌曲:搜尋歌曲(token.country),
+      不支援行動裝置:不支援行動裝置(token.country),
+      Safari瀏覽器請先至設定允許此頁面的自動撥放:Safari瀏覽器請先至設定允許此頁面的自動撥放(token.country),
+      如何做:如何做(token.country),
+      使用Chrome獲得最佳體驗:使用Chrome獲得最佳體驗(token.country)
+    }
+  }));
   dispatch(fetchNewHits(true));
   dispatch(fetchFeatured());
 };
 
 export const fetchFeatured = () => async dispatch => {
-  const result = await axiosMiddleWare(FEATURED_PLAYLISTS);
+  const result = await axiosMiddleWare(FEATURED_PLAYLISTS(token.country));
   dispatch(menuUpdateGroup({ ...result.data, isOpen: false, kind: FEATURED }));
 };
 export const fetchNewHits = init => async dispatch => {
-  const result = await axiosMiddleWare(NEW_HITS_PLAYLISTS);
+  const result = await axiosMiddleWare(NEW_HITS_PLAYLISTS(token.country));
   dispatch(menuUpdateGroup({ ...result.data, isOpen: true, kind: NEW_HITS }));
   if (init) {
     const first = result.data.data[0];
@@ -128,17 +141,19 @@ const axiosMiddleWare = async url => {
   if (ft.error) {
     return ft;
   }
-  const retult = await axios.get(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `${token.token_type} ${token.access_token}`
+  if(url){
+    const retult = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token.token_type} ${token.access_token}`
+      }
+    });
+  
+    if (retult.error) {
+      return retult;
     }
-  });
-
-  if (retult.error) {
     return retult;
   }
-  return retult;
 };
 
 const refreshTokenIfNeeded = async () => {

@@ -93,5 +93,9 @@
     bottom: 3px;
     font-size: 10px;
     white-space: nowrap;
+    &.leftinfo{
+      left: 25px;
+      bottom: 3px;
+    }
   }
 }

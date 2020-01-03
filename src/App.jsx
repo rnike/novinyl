@@ -33,7 +33,7 @@ export class App extends Component {
   }
 
   render() {
-    const { menuUpdate, colorInvert, color, colorBottom } = this.props;
+    const { menuUpdate, colorInvert, country, colorBottom, language } = this.props;
     const { isMobile, isSafari, isChrome } = window;
     return (
       <div style={{ background: `${colorInvert}99` }} className='bgOut'>
@@ -66,31 +66,33 @@ export class App extends Component {
               <div className='loading'>loading</div>
             </div>
           </div>
-          <a style={{ color: colorBottom }} className='info' target='_blank' rel='noopener noreferrer' href='https://www.kkbox.com/tw/tc/info/index.html'>
+          <a style={{ color: colorBottom }} className='info' target='_blank' rel='noopener noreferrer' href='https://www.kkbox.com'>
             Powered by KKBOX
           </a>
-
+          <div style={{ color: colorBottom }} className='info leftinfo'>
+            {country}
+          </div>
           {isMobile && (
             <div style={{ color: colorBottom }} className='Warning'>
-              不支援行動裝置 ifram autoplay issue
+              {language&&language.不支援行動裝置}
             </div>
           )}
           {!isMobile && isSafari && (
             <div style={{ color: colorBottom }} className='Warning'>
-              <div>Safari 瀏覽器請先至設定允許此頁面的自動撥放</div>
+              <div>{language&&language.Safari瀏覽器請先至設定允許此頁面的自動撥放}</div>
               <a
                 style={{ color: colorBottom }}
                 target='_blank'
                 rel='noopener noreferrer'
                 href='https://www.howtogeek.com/326532/safari-now-disables-auto-playing-videos.-heres-how-to-allow-them-for-certain-sites/'
               >
-                如何做?
+                {language&&language.如何做}
               </a>
             </div>
           )}
           {!isMobile && !isChrome && !isSafari && (
             <div style={{ color: colorBottom }} className='Warning'>
-              使用 Chrome 獲得最佳體驗
+              {language&&language.使用Chrome獲得最佳體驗}
             </div>
           )}
         </div>
@@ -105,7 +107,9 @@ const mapStateToProps = state => ({
   color: state.UI.color,
   colorInvert: state.UI.colorInvert,
   colorBottom: state.UI.colorBottom,
-  isInit: state.UI.isInit
+  isInit: state.UI.isInit,
+  country: state.UI.country,
+  language: state.UI.language
 });
 
 const mapDispatchToProps = dispatch =>
