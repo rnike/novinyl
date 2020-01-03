@@ -33,7 +33,7 @@ export class App extends Component {
   }
 
   render() {
-    const { menuUpdate, colorInvert, country, colorBottom, language } = this.props;
+    const { menuUpdate, colorInvert, country, colorBottom, language, error } = this.props;
     const { isMobile, isSafari, isChrome } = window;
     return (
       <div style={{ background: `${colorInvert}99` }} className='bgOut'>
@@ -64,6 +64,8 @@ export class App extends Component {
             <div className='content'>
               <div className='logo'>NOVINYL</div>
               <div className='loading'>loading</div>
+              {error && <div className='loading'>erro on initializing</div>}
+              {error && <div className='loading'>{error}</div>}
             </div>
           </div>
           <a style={{ color: colorBottom }} className='info' target='_blank' rel='noopener noreferrer' href='https://www.kkbox.com'>
@@ -74,25 +76,25 @@ export class App extends Component {
           </div>
           {isMobile && (
             <div style={{ color: colorBottom }} className='Warning'>
-              {language&&language.不支援行動裝置}
+              {language && language.不支援行動裝置}
             </div>
           )}
           {!isMobile && isSafari && (
             <div style={{ color: colorBottom }} className='Warning'>
-              <div>{language&&language.Safari瀏覽器請先至設定允許此頁面的自動撥放}</div>
+              <div>{language && language.Safari瀏覽器請先至設定允許此頁面的自動撥放}</div>
               <a
                 style={{ color: colorBottom }}
                 target='_blank'
                 rel='noopener noreferrer'
                 href='https://www.howtogeek.com/326532/safari-now-disables-auto-playing-videos.-heres-how-to-allow-them-for-certain-sites/'
               >
-                {language&&language.如何做}
+                {language && language.如何做}
               </a>
             </div>
           )}
           {!isMobile && !isChrome && !isSafari && (
             <div style={{ color: colorBottom }} className='Warning'>
-              {language&&language.使用Chrome獲得最佳體驗}
+              {language && language.使用Chrome獲得最佳體驗}
             </div>
           )}
         </div>
@@ -109,7 +111,8 @@ const mapStateToProps = state => ({
   colorBottom: state.UI.colorBottom,
   isInit: state.UI.isInit,
   country: state.UI.country,
-  language: state.UI.language
+  language: state.UI.language,
+  error: state.UI.error
 });
 
 const mapDispatchToProps = dispatch =>
