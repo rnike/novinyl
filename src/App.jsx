@@ -19,8 +19,7 @@ export class App extends Component {
         .timeline()
         .add('colorChanged')
         .to(ref, { background: background, color: color }, 'colorChanged')
-        .to(thumb, { background: background }, 'colorChanged')
-        .to('body', { 'scrollbar-face-color': background }, 'colorChanged');
+        .to(thumb, { background: background }, 'colorChanged');
     }
     if (prevProps.isInit !== isInit) {
       gsap.to('.loadingPg', {
