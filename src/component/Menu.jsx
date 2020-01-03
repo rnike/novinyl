@@ -73,7 +73,7 @@ export class Menu extends Component {
                 letterSpacing: 3
               }}
             >
-              NOVINYL v0.0.1
+              NOVINYL v0.1.2
             </div>
             <GitHubIcon style={{ paddingLeft: 10, width: 20, height: 20 }} />
           </div>
