@@ -25,9 +25,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "rm -rf node_modules/.cache && rm -rf build && yarn build && yarn gh-pages -d build -t true"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,5 +46,8 @@
       "last 1 safari version",
       "ie 11"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
