@@ -2,7 +2,7 @@ import axios from 'axios';
 import { 速爆新歌, 搜尋歌曲, 不支援行動裝置, Safari瀏覽器請先至設定允許此頁面的自動撥放, 如何做, 使用Chrome獲得最佳體驗 } from './language';
 import { albumUpdate, menuUpdateGroup, playerUpdate, uiUpdate } from './actions';
 
-const FETCH_TOKEN_URL = 'https://novon.cc:3001/kkbox/oauth2'; //"https://account.kkbox.com/oauth2/token";
+const FETCH_TOKEN_URL = 'https://novon.cc/auth'; //"https://account.kkbox.com/oauth2/token";
 const NEW_HITS_PLAYLISTS = country => `https://api.kkbox.com/v1.1/new-hits-playlists?territory=${country}`;
 const NEW_HITS_PLAYLISTS_TRACKS = (id, country) => `https://api.kkbox.com/v1.1/new-hits-playlists/${id}/tracks?territory=${country}&limit=15`;
 const TRACK = (id, country) => `https://api.kkbox.com/v1.1/tracks/${id}?territory=${country}`;
@@ -189,7 +189,7 @@ const fetchToken = async () => {
     if (result.error) {
       return result;
     }
-    token = { ...result.data, received_at: new Date() };
+    token = { ...result.data, country: 'TW', received_at: new Date() };
     return {};
   } catch (ex) {
     return {
