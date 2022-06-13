@@ -2,7 +2,7 @@ import axios from 'axios';
 import { 速爆新歌, 搜尋歌曲, 不支援行動裝置, Safari瀏覽器請先至設定允許此頁面的自動撥放, 如何做, 使用Chrome獲得最佳體驗 } from './language';
 import { albumUpdate, menuUpdateGroup, playerUpdate, uiUpdate } from './actions';
 
-const FETCH_TOKEN_URL = 'https://novon.cc:3001/kkbox/oauth2'; //"https://account.kkbox.com/oauth2/token";
+// const FETCH_TOKEN_URL = 'https://novon.cc:3001/kkbox/oauth2'; //"https://account.kkbox.com/oauth2/token";
 const NEW_HITS_PLAYLISTS = country => `https://api.kkbox.com/v1.1/new-hits-playlists?territory=${country}`;
 const NEW_HITS_PLAYLISTS_TRACKS = (id, country) => `https://api.kkbox.com/v1.1/new-hits-playlists/${id}/tracks?territory=${country}&limit=15`;
 const TRACK = (id, country) => `https://api.kkbox.com/v1.1/tracks/${id}?territory=${country}`;
@@ -12,7 +12,29 @@ const FEATCH_ARTIST_TRACKS = (id, country) => `https://api.kkbox.com/v1.1/artist
 const SEARCH_URL = (q, country) => `https://api.kkbox.com/v1.1/search?q=${q}&territory=${country}&type=track&limit=15`;
 const SongPlayerUrl = (id, country) => `https://widget.kkbox.com/v1/?id=${id}&type=song&terr=${country}&autoplay=true`;
 
+const refreshWithToken = () =>
+  (window.location.href =
+    'https://account.kkbox.com/oauth2/authorize?redirect_uri=https://kkbox-oauth-helper.web.app/f28dc4/getToken&client_id=844abf57ebcde38c731ec7b26ec6aed3&response_type=code&state=YOUR_STATUS_VAR');
+
 export var token;
+
+(() => {
+  const selfUri = new URL(window.location.href);
+  const retObj = JSON.parse(selfUri.searchParams.get('ret'));
+
+  if (!retObj) {
+    refreshWithToken();
+  }
+
+  window.history.replaceState({}, document.title, '/');
+  token = {
+    access_token: retObj.access_token,
+    token_type: retObj.token_type,
+    expires_in: retObj.expires_in,
+    country: 'TW',
+    received_at: new Date(),
+  };
+})();
 
 export const NEW_HITS = 'NEW_HITS';
 export const FEATURED = 'FEATURED_PLAYLISTS';
@@ -185,11 +207,8 @@ const shouldRefreshToken = () => {
 };
 const fetchToken = async () => {
   try {
-    const result = await axios.post(FETCH_TOKEN_URL);
-    if (result.error) {
-      return result;
-    }
-    token = { ...result.data, received_at: new Date() };
+    refreshWithToken();
+   
     return {};
   } catch (ex) {
     return {
