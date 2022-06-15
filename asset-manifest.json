@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/novinyl/static/css/main.d9d31566.css",
+    "main.js": "/novinyl/static/js/main.e03e8f0a.js",
+    "static/media/noise.png": "/novinyl/static/media/noise.3a79f5933901dc2f808e.png",
+    "index.html": "/novinyl/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.d9d31566.css",
+    "static/js/main.e03e8f0a.js"
+  ]
+}
