@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/novinyl/static/css/main.2ba0b97e.css",
-    "main.js": "/novinyl/static/js/main.61db6237.js",
+    "main.css": "/novinyl/static/css/main.e3ad5349.css",
+    "main.js": "/novinyl/static/js/main.41f1e155.js",
     "static/media/noise.png": "/novinyl/static/media/noise.3a79f5933901dc2f808e.png",
     "index.html": "/novinyl/index.html"
   },
   "entrypoints": [
-    "static/css/main.2ba0b97e.css",
-    "static/js/main.61db6237.js"
+    "static/css/main.e3ad5349.css",
+    "static/js/main.41f1e155.js"
   ]
 }
