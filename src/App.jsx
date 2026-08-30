@@ -75,25 +75,25 @@ export class App extends Component {
           </div>
           {isMobile && (
             <div style={{ color: colorBottom }} className='Warning'>
-              {language && language.不支援行動裝置}
+              {language && language.mobileNotSupported}
             </div>
           )}
           {!isMobile && isSafari && (
             <div style={{ color: colorBottom }} className='Warning'>
-              <div>{language && language.Safari瀏覽器請先至設定允許此頁面的自動撥放}</div>
+              <div>{language && language.safariAutoplayNotice}</div>
               <a
                 style={{ color: colorBottom }}
                 target='_blank'
                 rel='noopener noreferrer'
                 href='https://www.howtogeek.com/326532/safari-now-disables-auto-playing-videos.-heres-how-to-allow-them-for-certain-sites/'
               >
-                {language && language.如何做}
+                {language && language.howTo}
               </a>
             </div>
           )}
           {!isMobile && !isChrome && !isSafari && (
             <div style={{ color: colorBottom }} className='Warning'>
-              {language && language.使用Chrome獲得最佳體驗}
+              {language && language.chromeRecommendation}
             </div>
           )}
         </div>

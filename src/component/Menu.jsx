@@ -79,7 +79,7 @@ export class Menu extends Component {
           </div>
           <div className='drawerContent'>
             <div ref={x => (this.origin = x)} className='origin'>
-              {NEW_HITS && <MenuItems groupTitle={language&&language.速爆新歌} groupData={NEW_HITS} />}
+              {NEW_HITS && <MenuItems groupTitle={language && language.newHits} groupData={NEW_HITS} />}
               {FETURED && <MenuItems groupTitle={'FETURED'} groupData={FETURED} />}
               <div
                 className='SigleItem'

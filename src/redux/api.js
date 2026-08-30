@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { 速爆新歌, 搜尋歌曲, 不支援行動裝置, Safari瀏覽器請先至設定允許此頁面的自動撥放, 如何做, 使用Chrome獲得最佳體驗 } from './language';
+import languageSelector from './languageSelector';
 import { albumUpdate, menuUpdateGroup, playerUpdate, uiUpdate } from './actions';
 
 const FETCH_TOKEN_URL = 'https://novon.cc/auth'; //"https://account.kkbox.com/oauth2/token";
@@ -108,14 +108,7 @@ export const fetchMenuItems = () => async dispatch => {
   dispatch(
     uiUpdate({
       country: token.country,
-      language: {
-        速爆新歌: 速爆新歌(token.country),
-        搜尋歌曲: 搜尋歌曲(token.country),
-        不支援行動裝置: 不支援行動裝置(token.country),
-        Safari瀏覽器請先至設定允許此頁面的自動撥放: Safari瀏覽器請先至設定允許此頁面的自動撥放(token.country),
-        如何做: 如何做(token.country),
-        使用Chrome獲得最佳體驗: 使用Chrome獲得最佳體驗(token.country)
-      },
+      language: languageSelector(token.country),
       error: err && err.error
     })
   );

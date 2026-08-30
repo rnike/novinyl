@@ -463,7 +463,7 @@ export class Player extends Component {
               }}
               inputRef={x => (this.input = x)}
               type='text'
-              label={language&&language.搜尋歌曲}
+              label={language && language.searchSongs}
             />
           </div>
         </div>
