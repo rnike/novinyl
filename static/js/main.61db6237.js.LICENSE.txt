@@ -5,22 +5,20 @@ object-assign
 */
 
 /*!
- * GSAP 3.0.2
- * https://greensock.com
+ * GSAP 3.15.0
+ * https://gsap.com
  *
- * @license Copyright 2008-2019, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
+ * @license Copyright 2008-2026, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
  * @author: Jack Doyle, jack@greensock.com
 */
 
 /*!
- * TextPlugin 3.0.2
- * https://greensock.com
+ * TextPlugin 3.15.0
+ * https://gsap.com
  *
- * @license Copyright 2008-2019, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
+ * @license Copyright 2008-2026, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
  * @author: Jack Doyle, jack@greensock.com
 */
 
