@@ -2,7 +2,7 @@ import axios from 'axios';
 import languageSelector from './languageSelector';
 import { albumUpdate, menuUpdateGroup, playerUpdate, uiUpdate } from './actions';
 
-const FETCH_TOKEN_URL = 'https://novon.cc/auth'; //"https://account.kkbox.com/oauth2/token";
+const FETCH_TOKEN_URL = 'https://www.novon.cc/novinyl/auth'; //"https://account.kkbox.com/oauth2/token";
 const NEW_HITS_PLAYLISTS = country => `https://api.kkbox.com/v1.1/new-hits-playlists?territory=${country}`;
 const NEW_HITS_PLAYLISTS_TRACKS = (id, country) => `https://api.kkbox.com/v1.1/new-hits-playlists/${id}/tracks?territory=${country}&limit=15`;
 const TRACK = (id, country) => `https://api.kkbox.com/v1.1/tracks/${id}?territory=${country}`;
