@@ -1,7 +1,7 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -36,11 +36,10 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 gsap.registerPlugin(CSSRulePlugin);
 gsap.registerPlugin(TextPlugin);
 
-ReactDOM.render(
+createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
